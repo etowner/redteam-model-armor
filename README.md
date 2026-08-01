@@ -143,9 +143,15 @@ The core finding is that **Model Armor's default (Permissive) configuration is i
 ## Limitations
 
 - **Prompt construction**: Prompts are synthetic concatenations of dataset rows rather than naturalistic adversarial inputs. Real-world attack prompts may differ structurally.
-- **Dangerous content category**: the `umitka/synthetic-harmful-and-safe-prompts-4500-samples` dataset was excluded from primary analysis due to label mismatch with Model Armor's `dangerous` filter — the dataset's broad "harmful" label does not cleanly correspond to the filter's narrower definition. Results at all three thresholds showed near-zero detection, likely reflecting this mismatch rather than filter failure.
-- **Sexually explicit content**: The `harsh03/sexually-explicit-comment` dataset was excluded due to absence of benign samples, which would prevent meaningful precision measurement.
-- **Malicious URIs**: The `sid321axn/malicious-urls-dataset` was evaluated but Model Armor registered zero detections across all threshold configurations, suggesting URI-based attack patterns are outside the scope of the evaluated filters.
+- **Hate Speech labels**: The mrmorj/hate-speech-and-offensive-language-dataset has 3 labels (hate speech, offensive language, neither) but in this evaluation "hate speech" and "offensive lanaguage" labels are combined into one label "hate". This is what possibly causes model results to differ so much from the labeled dataset. 
+- **Test suite**: Currently, test suite is limited to only 2 types of attacks, where in reality LLMs will be subjected to a greater variety. 
+
+---
+
+## Future Work
+
+- **Offensive language analysis**: Instead of doing a binary analysis of hate speech (1 for hate speech and/or offensive language, 0 for neither), do a scale comparison using all 3 labels and Model Armors confidence scores.  
+- **Test more filters**: Find viable datasets to test Google Model Armor's malicious uri's filter and also protection against sexually explicit and dangerous content. 
 
 ---
 
