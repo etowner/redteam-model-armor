@@ -143,6 +143,17 @@ The core finding is that **Model Armor's default (Permissive) configuration is i
 ## Limitations
 
 - **Prompt construction**: Prompts are synthetic concatenations of dataset rows rather than naturalistic adversarial inputs. Real-world attack prompts may differ structurally.
+- **Hate Speech labels**: The mrmorj/hate-speech-and-offensive-language-dataset has 3 labels (hate speech, offensive language, neither) but in this evaluation "hate speech" and "offensive lanaguage" labels are combined into one label "hate". This is what possibly causes model results to differ so much from the labeled dataset. 
+- **Test suite**: Currently, test suite is limited to only 2 types of attacks, where in reality LLMs will be subjected to a greater variety. 
+
+---
+
+## Future Work
+
+- **Offensive language analysis**: Instead of doing a binary analysis of hate speech (1 for hate speech and/or offensive language, 0 for neither), do a scale comparison using all 3 labels and Model Armors confidence scores.  
+- **Test more filters**: Find viable datasets to test Google Model Armor's malicious uri's filter and also protection against sexually explicit and dangerous content. 
+
+---
 
 ## Environment
 
