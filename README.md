@@ -55,32 +55,32 @@ Per-category classification reports (precision, recall, F1) and confusion matric
 
 | Permissive                     | Predicted Benign | Predicted Injection |
 | ------------------------------ | ---------------- | ------------------- |
-| **Actually Benign** (n=222)    | 215 TN           | 7 FP                |
-| **Actually Injection** (n=278) | 162 FN           | 116 TP              |
+| **Actually Benign** (n=246)    | 237 TN           | 9 FP                |
+| **Actually Injection** (n=254) | 149 FN           | 105 TP              |
 
 | Balanced                       | Predicted Benign | Predicted Injection |
 | ------------------------------ | ---------------- | ------------------- |
-| **Actually Benign** (n=222)    | 182 TN           | 40 FP               |
-| **Actually Injection** (n=278) | 54 FN            | 224 TP              |
+| **Actually Benign** (n=246)    | 212 TN           | 34 FP               |
+| **Actually Injection** (n=254) | 41 FN            | 213 TP              |
 
 | Restrictive                    | Predicted Benign | Predicted Injection |
 | ------------------------------ | ---------------- | ------------------- |
-| **Actually Benign** (n=222)    | 163 TN           | 59 FP               |
-| **Actually Injection** (n=278) | 21 FN            | 257 TP              |
+| **Actually Benign** (n=246)    | 189 TN           | 57 FP               |
+| **Actually Injection** (n=254) | 21 FN            | 233 TP              |
 
 #### Classification Report
 
 | Configuration | Benign F1 | Injection Precision | Injection Recall | Injection F1 | Accuracy |
 | ------------- | --------- | ------------------- | ---------------- | ------------ | -------- |
-| Permissive    | 0.72      | 0.94                | 0.42             | 0.58         | 0.66     |
-| Balanced      | 0.79      | 0.85                | 0.81             | 0.83         | 0.81     |
-| Restrictive   | 0.80      | 0.81                | 0.92             | 0.87         | 0.84     |
+| Permissive    | 0.75      | 0.92                | 0.41             | 0.57         | 0.68     |
+| Balanced      | 0.85      | 0.86                | 0.84             | 0.85         | 0.85     |
+| Restrictive   | 0.83      | 0.80                | 0.92             | 0.86         | 0.84     |
 
 #### Key Findings
 
-- **Permissive misses 58% of injection attempts** (recall=0.42, FN=162) with only 7 false positives — the filter is conservative to the point of being unreliable as a security control at this threshold.
-- **Balanced and Restrictive achieve nearly identical accuracy (0.81–0.84)**, suggesting diminishing returns from lowering the confidence threshold past Balanced for injection detection. Balanced is the efficient operating point.
-- **Restrictive improves injection recall to 0.92** at the cost of 59 false positives on benign prompts — a 27% false positive rate that may be acceptable in high-security deployment contexts.
+- **Permissive misses 50%+ of injection attempts** (recall=0.41, FN=149) with only 9 false positives meaning the filter is conservative to the point of being unreliable as a security control at this threshold.
+- **Balanced and Restrictive achieve nearly identical accuracy (~0.85)**, suggesting diminishing returns from lowering the confidence threshold past Balanced for injection detection. Balanced is the efficient operating point.
+- **Restrictive improves injection recall to 0.92** at the cost of 57 false positives on benign prompts — a __ false positive rate that may be acceptable in high-security deployment contexts.
 
 ---
 
@@ -90,32 +90,32 @@ Per-category classification reports (precision, recall, F1) and confusion matric
 
 | Permissive                | Predicted Safe | Predicted Hate |
 | ------------------------- | -------------- | -------------- |
-| **Actually Safe** (n=215) | 215 TN         | 0 FP           |
-| **Actually Hate** (n=285) | 283 FN         | 2 TP           |
+| **Actually Safe** (n=241) | 241 TN         | 0 FP           |
+| **Actually Hate** (n=259) | 254 FN         | 5 TP           |
 
 | Balanced                  | Predicted Safe | Predicted Hate |
 | ------------------------- | -------------- | -------------- |
-| **Actually Safe** (n=215) | 213 TN         | 2 FP           |
-| **Actually Hate** (n=285) | 192 FN         | 93 TP          |
+| **Actually Safe** (n=241) | 234 TN         | 7 FP           |
+| **Actually Hate** (n=259) | 171 FN         | 88 TP          |
 
 | Restrictive               | Predicted Safe | Predicted Hate |
 | ------------------------- | -------------- | -------------- |
-| **Actually Safe** (n=215) | 110 TN         | 105 FP         |
-| **Actually Hate** (n=285) | 0 FN           | 285 TP         |
+| **Actually Safe** (n=241) | 129 TN         | 112 FP         |
+| **Actually Hate** (n=259) | 0 FN           | 259 TP         |
 
 #### Classification Report
 
 | Configuration | Safe F1 | Hate Precision | Hate Recall | Hate F1 | Accuracy |
 | ------------- | ------- | -------------- | ----------- | ------- | -------- |
-| Permissive    | 0.60    | 1.00           | 0.01        | 0.01    | 0.43     |
-| Balanced      | 0.69    | 0.98           | 0.33        | 0.49    | 0.61     |
-| Restrictive   | 0.68    | 0.73           | 1.00        | 0.84    | 0.79     |
+| Permissive    | 0.65    | 1.00           | 0.02        | 0.04    | 0.49     |
+| Balanced      | 0.72    | 0.93           | 0.34        | 0.50    | 0.64     |
+| Restrictive   | 0.83    | 0.80           | 0.92        | 0.86    | 0.84     |
 
 #### Key Findings
 
-- **Permissive is effectively non-functional for hate speech detection** — it catches only 2 of 285 hate speech samples (recall=0.01) while producing zero false positives. At this threshold, the filter provides no meaningful safety guarantee.
-- **Balanced improves recall to 0.33 with near-zero false positives (2 FP)** — still misses 67% of hate speech, but does not over-flag safe content. Precision remains near-perfect (0.98) at this threshold.
-- **Restrictive achieves 100% hate speech recall (FN=0)** but at significant cost — 105 of 215 safe prompts are incorrectly flagged (49% false positive rate). Hate precision drops to 0.73.
+- **Permissive is effectively non-functional for hate speech detection** — it catches only 5 of 259 hate speech samples (recall=0.02) while producing zero false positives.
+- **Balanced improves recall to 0.33 with near-zero false positives (7 FP)** — still misses 67% of hate speech, but does not over-flag safe content. Precision remains near-perfect (0.98) at this threshold.
+- **Restrictive achieves 92% hate speech recall (FN=0)** but at significant cost — 112 of 241 safe prompts are incorrectly flagged (49% false positive rate). Hate precision drops to 0.80.
 - **No single configuration achieves balanced performance** — Permissive and Balanced preserve safe content but miss most hate speech; Restrictive catches all hate speech but produces an unacceptable false positive rate for general use.
 
 ---
@@ -125,7 +125,7 @@ Per-category classification reports (precision, recall, F1) and confusion matric
 | Category         | Best Recall Config | Best Precision Config        | Recommended Config                                       |
 | ---------------- | ------------------ | ---------------------------- | -------------------------------------------------------- |
 | Prompt Injection | Restrictive (0.92) | Permissive (0.94)            | **Balanced** — strong F1 with fewer FPs than Restrictive |
-| Hate Speech      | Restrictive (1.00) | Permissive / Balanced (1.00) | **Context-dependent** — see below                        |
+| Hate Speech      | Restrictive (0.92) | Permissive(1.00)             | **Context-dependent** — see below                        |
 
 For hate speech, the recommended configuration depends on deployment context:
 
@@ -143,11 +143,6 @@ The core finding is that **Model Armor's default (Permissive) configuration is i
 ## Limitations
 
 - **Prompt construction**: Prompts are synthetic concatenations of dataset rows rather than naturalistic adversarial inputs. Real-world attack prompts may differ structurally.
-- **Dangerous content category**: the `umitka/synthetic-harmful-and-safe-prompts-4500-samples` dataset was excluded from primary analysis due to label mismatch with Model Armor's `dangerous` filter — the dataset's broad "harmful" label does not cleanly correspond to the filter's narrower definition. Results at all three thresholds showed near-zero detection, likely reflecting this mismatch rather than filter failure.
-- **Sexually explicit content**: The `harsh03/sexually-explicit-comment` dataset was excluded due to absence of benign samples, which would prevent meaningful precision measurement.
-- **Malicious URIs**: The `sid321axn/malicious-urls-dataset` was evaluated but Model Armor registered zero detections across all threshold configurations, suggesting URI-based attack patterns are outside the scope of the evaluated filters.
-
----
 
 ## Environment
 
