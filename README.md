@@ -143,6 +143,10 @@ The core finding is that **Model Armor's default (Permissive) configuration is i
 ## Limitations
 
 - **Prompt construction**: Prompts are synthetic concatenations of dataset rows rather than naturalistic adversarial inputs. Real-world attack prompts may differ structurally.
+- **Hate Speech labels**: The mrmorj/hate-speech-and-offensive-language-dataset has 3 labels (hate speech, offensive language, neither) but in this evaluation "hate speech" and "offensive lanaguage" labels are combined into one label "hate".
+- **Test suite**: Currently, test suite is limited to only 2 types of attacks, where in reality LLMs will be subjected to a greater variety. 
+
+---
 
 ## Environment
 
