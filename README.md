@@ -23,13 +23,7 @@ Google Model Armor is a managed security layer for LLM applications that filters
 
 Attack content was sampled exclusively from harmful subsets of each dataset to ensure ground truth label integrity. Benign prompts were constructed by sampling from the benign subset of each dataset.
 
-**Prompt distribution (n=500):**
-
-- Fully benign: 134
-- Hate speech positives: 285
-- Injection positives: 278
-
-> Note: prompts can carry multiple labels simultaneously (e.g. a prompt can be both an injection and contain hate speech).
+> Note: prompts can carry multiple labels simultaneously (e.g. a prompt can be both an injection and contain hate speech), so the task-specific supports in the evaluation outputs are reported separately below.
 
 ### Confidence Threshold Configurations
 
@@ -55,32 +49,32 @@ Per-category classification reports (precision, recall, F1) and confusion matric
 
 | Permissive                     | Predicted Benign | Predicted Injection |
 | ------------------------------ | ---------------- | ------------------- |
-| **Actually Benign** (n=246)    | 237 TN           | 9 FP                |
-| **Actually Injection** (n=254) | 149 FN           | 105 TP              |
+| **Actually Benign** (n=266)    | 263 TN           | 3 FP                |
+| **Actually Injection** (n=234) | 142 FN           | 92 TP               |
 
 | Balanced                       | Predicted Benign | Predicted Injection |
 | ------------------------------ | ---------------- | ------------------- |
-| **Actually Benign** (n=246)    | 212 TN           | 34 FP               |
-| **Actually Injection** (n=254) | 41 FN            | 213 TP              |
+| **Actually Benign** (n=266)    | 231 TN           | 35 FP               |
+| **Actually Injection** (n=234) | 51 FN            | 183 TP              |
 
 | Restrictive                    | Predicted Benign | Predicted Injection |
 | ------------------------------ | ---------------- | ------------------- |
-| **Actually Benign** (n=246)    | 189 TN           | 57 FP               |
-| **Actually Injection** (n=254) | 21 FN            | 233 TP              |
+| **Actually Benign** (n=266)    | 202 TN           | 64 FP               |
+| **Actually Injection** (n=234) | 22 FN            | 212 TP              |
 
 #### Classification Report
 
 | Configuration | Benign F1 | Injection Precision | Injection Recall | Injection F1 | Accuracy |
 | ------------- | --------- | ------------------- | ---------------- | ------------ | -------- |
-| Permissive    | 0.75      | 0.92                | 0.41             | 0.57         | 0.68     |
-| Balanced      | 0.85      | 0.86                | 0.84             | 0.85         | 0.85     |
-| Restrictive   | 0.83      | 0.80                | 0.92             | 0.86         | 0.84     |
+| Permissive    | 0.78      | 0.97                | 0.39             | 0.56         | 0.71     |
+| Balanced      | 0.84      | 0.84                | 0.78             | 0.81         | 0.83     |
+| Restrictive   | 0.82      | 0.77                | 0.91             | 0.83         | 0.83     |
 
 #### Key Findings
 
-- **Permissive misses 50%+ of injection attempts** (recall=0.41, FN=149) with only 9 false positives meaning the filter is conservative to the point of being unreliable as a security control at this threshold.
-- **Balanced and Restrictive achieve nearly identical accuracy (~0.85)**, suggesting diminishing returns from lowering the confidence threshold past Balanced for injection detection. Balanced is the efficient operating point.
-- **Restrictive improves injection recall to 0.92** at the cost of 57 false positives on benign prompts — a __ false positive rate that may be acceptable in high-security deployment contexts.
+- **Permissive misses 61% of injection attempts** (recall=0.39, FN=142) with only 3 false positives — the filter is conservative to the point of being unreliable as a security control at this threshold.
+- **Balanced and Restrictive tie on accuracy at 0.83**, but Balanced keeps false positives lower (35 vs. 64) while Restrictive improves recall (0.91 vs. 0.78) and F1 (0.83 vs. 0.81).
+- **Restrictive increases injection recall to 0.91** at the cost of 64 false positives on benign prompts — a 24% false positive rate that may be acceptable in high-security deployment contexts.
 
 ---
 
@@ -90,32 +84,32 @@ Per-category classification reports (precision, recall, F1) and confusion matric
 
 | Permissive                | Predicted Safe | Predicted Hate |
 | ------------------------- | -------------- | -------------- |
-| **Actually Safe** (n=241) | 241 TN         | 0 FP           |
-| **Actually Hate** (n=259) | 254 FN         | 5 TP           |
+| **Actually Safe** (n=262) | 262 TN         | 0 FP           |
+| **Actually Hate** (n=238) | 233 FN         | 5 TP           |
 
 | Balanced                  | Predicted Safe | Predicted Hate |
 | ------------------------- | -------------- | -------------- |
-| **Actually Safe** (n=241) | 234 TN         | 7 FP           |
-| **Actually Hate** (n=259) | 171 FN         | 88 TP          |
+| **Actually Safe** (n=262) | 260 TN         | 2 FP           |
+| **Actually Hate** (n=238) | 156 FN         | 82 TP          |
 
 | Restrictive               | Predicted Safe | Predicted Hate |
 | ------------------------- | -------------- | -------------- |
-| **Actually Safe** (n=241) | 129 TN         | 112 FP         |
-| **Actually Hate** (n=259) | 0 FN           | 259 TP         |
+| **Actually Safe** (n=262) | 145 TN         | 117 FP         |
+| **Actually Hate** (n=238) | 0 FN           | 238 TP         |
 
 #### Classification Report
 
 | Configuration | Safe F1 | Hate Precision | Hate Recall | Hate F1 | Accuracy |
 | ------------- | ------- | -------------- | ----------- | ------- | -------- |
-| Permissive    | 0.65    | 1.00           | 0.02        | 0.04    | 0.49     |
-| Balanced      | 0.72    | 0.93           | 0.34        | 0.50    | 0.64     |
-| Restrictive   | 0.83    | 0.80           | 0.92        | 0.86    | 0.84     |
+| Permissive    | 0.69    | 1.00           | 0.02        | 0.04    | 0.53     |
+| Balanced      | 0.77    | 0.98           | 0.34        | 0.51    | 0.68     |
+| Restrictive   | 0.71    | 0.67           | 1.00        | 0.80    | 0.77     |
 
 #### Key Findings
 
-- **Permissive is effectively non-functional for hate speech detection** — it catches only 5 of 259 hate speech samples (recall=0.02) while producing zero false positives.
-- **Balanced improves recall to 0.33 with near-zero false positives (7 FP)** — still misses 67% of hate speech, but does not over-flag safe content. Precision remains near-perfect (0.98) at this threshold.
-- **Restrictive achieves 92% hate speech recall (FN=0)** but at significant cost — 112 of 241 safe prompts are incorrectly flagged (49% false positive rate). Hate precision drops to 0.80.
+- **Permissive is effectively non-functional for hate speech detection** — it catches only 5 of 238 hate speech samples (recall=0.02) while producing 233 false negatives. At this threshold, the filter provides no meaningful safety guarantee.
+- **Balanced improves recall to 0.34 with only 2 false positives** — still misses 66% of hate speech, but does not over-flag safe content. Precision remains near-perfect (0.98) at this threshold.
+- **Restrictive achieves 100% hate speech recall (FN=0)** but at significant cost — 117 of 262 safe prompts are incorrectly flagged (45% false positive rate). Hate precision drops to 0.67.
 - **No single configuration achieves balanced performance** — Permissive and Balanced preserve safe content but miss most hate speech; Restrictive catches all hate speech but produces an unacceptable false positive rate for general use.
 
 ---
@@ -124,19 +118,19 @@ Per-category classification reports (precision, recall, F1) and confusion matric
 
 | Category         | Best Recall Config | Best Precision Config        | Recommended Config                                       |
 | ---------------- | ------------------ | ---------------------------- | -------------------------------------------------------- |
-| Prompt Injection | Restrictive (0.92) | Permissive (0.94)            | **Balanced** — strong F1 with fewer FPs than Restrictive |
-| Hate Speech      | Restrictive (0.92) | Permissive(1.00)             | **Context-dependent** — see below                        |
+| Prompt Injection | Restrictive (0.91) | Permissive (0.97)            | **Balanced or Restrictive** — Balanced lowers FPs, Restrictive maximizes recall |
+| Hate Speech      | Restrictive (1.00) | Permissive (1.00)            | **Context-dependent** — see below                        |
 
 For hate speech, the recommended configuration depends on deployment context:
 
 - **High-risk environments** (content moderation, child safety): use Restrictive and accept the false positive rate — missing hate speech is more costly than over-flagging.
-- **General-purpose applications**: use Balanced — it eliminates false positives while catching a meaningful portion of hate speech, with the understanding that 67% of hate speech will go undetected.
+- **General-purpose applications**: use Balanced — it keeps false positives very low while catching a meaningful portion of hate speech, with the understanding that 66% of hate speech will go undetected.
 
-The core finding is that **Model Armor's default (Permissive) configuration is insufficient as a standalone safety control** — catching only 1% of hate speech and 42% of injection attempts. Detection improves significantly at Restrictive (100% and 92% respectively), but at the cost of a 49% false positive rate on hate speech, making universal configuration recommendations impossible.
+The core finding is that **Model Armor's default (Permissive) configuration is insufficient as a standalone safety control** — catching only 2% of hate speech and 39% of injection attempts. Detection improves significantly at Restrictive (100% and 91% respectively), but at the cost of a 45% false positive rate on hate speech, making universal configuration recommendations impossible.
 
 ## Results Overview
 
-![Model Armor Performance by Confidence Threshold](model_armor_evaluation.png)
+![Model Armor Performance by Confidence Threshold](baseline_model_armor_evaluation.png)
 
 ---
 
